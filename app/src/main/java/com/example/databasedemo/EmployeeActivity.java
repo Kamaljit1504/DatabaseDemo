@@ -35,17 +35,16 @@ public class EmployeeActivity extends AppCompatActivity {
         Cursor cursor = mDatabase.rawQuery(sql, null);
 
 
-        if (cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             do {
                 employeeList.add(new Employee(
-                        cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getDouble(4)
+                                cursor.getInt(0),
+                                cursor.getString(1),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getDouble(4)
 
-                )
+                        )
                 );
             } while (cursor.moveToNext());
 
@@ -57,3 +56,4 @@ public class EmployeeActivity extends AppCompatActivity {
 
         }
     }
+}
