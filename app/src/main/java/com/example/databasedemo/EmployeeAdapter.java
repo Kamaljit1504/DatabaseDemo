@@ -149,6 +149,8 @@ public class EmployeeAdapter extends ArrayAdapter
         String sql = "SELECT *  FROM employee";
         Cursor cursor = mDatabase.rawQuery(sql, null);
 
+        employees.clear();
+
         if (cursor.moveToFirst()) {
             employees.clear();
 

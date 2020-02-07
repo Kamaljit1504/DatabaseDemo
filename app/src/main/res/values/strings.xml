@@ -11,6 +11,12 @@
     <string name="edit_employees">edit_employees</string>
     <string name="update_employees">update_employees</string>
     <string name="update_employees_salary">update_employees_salary</string>
+    <string name="update_employee_details">Update employee details</string>
+    <string name="add_details_of_new_employee">Add details of New Employee</string>
+    <string name="add">Add</string>
+    <string name="view_list_of_employees">View List of Employees</string>
+    <string name="select_department">Select Department</string>
+    <string name="enter_the_employee_name">Enter the employee name</string>
 
     <string-array name="departments">
         <item>Technical</item>
