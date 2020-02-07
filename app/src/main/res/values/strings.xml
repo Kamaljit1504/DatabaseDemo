@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">DatabaseDemo</string>
+    <string name="add_new_emp">Add a new Employee</string>
+    <string name="select_Department"> Selct Department</string>
+    <string name="enter_employee_salary">Enter employee salary</string>
+    <string name="add_employees">View Emplyee</string>
+    <string name="View_Employee">View Employees</string>
+
+   <string-array name="departments">
+       <item>Technical</item>
+       <item>Supoort</item>
+       <item>Research and development</item>
+       <item>Marketing</item>
+       <item>Human Resource</item>
+   </string-array>
+
+</resources>
