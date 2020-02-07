@@ -2,6 +2,7 @@ package com.example.databasedemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Camera;
 import android.os.Bundle;
@@ -16,86 +17,82 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String Databasename = "kk";
-    SQLiteDatabase mdataBase;
+    // in order to use database you should give a name to your database
+    public static final String DATABASE_NAME = "myDatabase";
+    SQLiteDatabase mDatabase;
 
-    EditText edittextName, editTextSalary;
+    EditText editTextName, editTextSalary;
     Spinner spinnerDept;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        edittextName = findViewById(R.id.editTextname);
+
+        editTextName = findViewById(R.id.editTextName);
         editTextSalary = findViewById(R.id.editTextSalary);
-        spinnerDept = findViewById(R.id.SpinnerDepartment);
+        spinnerDept = findViewById(R.id.spinnerDepartment);
 
         findViewById(R.id.btnAddEmployee).setOnClickListener(this);
-        findViewById(R.id.tvViewEmp).setOnClickListener(this);
-        // in order to open or create database
-        mdataBase= openOrCreateDatabase(Databasename , MODE_PRIVATE, null);
-        createTable(mdataBase);
+        findViewById(R.id.tvViewEmployee).setOnClickListener(this);
 
-
+        // in order to open or create database we use the following code
+        mDatabase = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        createTable();
     }
 
-    private void createTable(SQLiteDatabase mdataBase)
-    {
-        String sql = "CREATE TABLE IF NOT EXISTS EMPLOYEES ("+
-                "id INTEGER NOT NULL CONSTRAINT employee_pk PRIMARY KEY AUTOINCREMENT," +
-                "name VARCHAR(200) NOT NULL," +
-                "department VARCHAR(200) NOT NULL," +
-                "joiningDAte DATETIME NOT NULL,"+
+    private void createTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS employee (" +
+                "id INTEGER NOT NULL CONSTRAINT employee_pk PRIMARY KEY AUTOINCREMENT, " +
+                "name VARCHAR(200) NOT NULL, " +
+                "department VARCHAR(200) NOT NULL, " +
+                "joiningdate DATETIME NOT NULL, " +
                 "salary DOUBLE NOT NULL);";
-        mdataBase.execSQL(sql);
+        mDatabase.execSQL(sql);
     }
+
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btnAddEmployee:
-                addEmploee();
+                addEmployee();
                 break;
+            case R.id.tvViewEmployee:
+                // start activity to another activity to see the list of employees
+                Intent intent = new Intent(MainActivity.this, EmployeeActivity.class);
+                startActivity(intent);
 
-            case R.id.tvViewEmp:
-
+                break;
         }
-
     }
 
-
-
-    private void addEmploee()
-    {
-        String name = edittextName.getText().toString().trim();
+    private void addEmployee() {
+        String name = editTextName.getText().toString().trim();
         String salary = editTextSalary.getText().toString().trim();
-        String dept  = spinnerDept.getSelectedItem().toString();
+        String dept = spinnerDept.getSelectedItem().toString();
 
-        // Calander to get the current time
-
-        Calendar calendar= Calendar.getInstance();
+        // using the Calendar object to get the current time
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String joiningData = sdf.format(calendar.getTime());
+        String joiningDate = sdf.format(calendar.getTime());
 
-        if (name.isEmpty())
-        {
-            edittextName.setError("name is Mandatory");
-            edittextName.requestFocus();
+        if (name.isEmpty()) {
+            editTextName.setError("name field is mandatory");
+            editTextName.requestFocus();
             return;
         }
-        if (salary.isEmpty())
-        {
-            editTextSalary.setError("salary is Mandatory");
+
+        if (salary.isEmpty()) {
+            editTextSalary.setError("salary field cannot be empty");
             editTextSalary.requestFocus();
             return;
         }
 
-        String sql = "INSERT INTO employees (name, department, joiningdate, salary)" + "VALUES (?,?,?,?);";
-        mdataBase.execSQL(sql, new String[] {name, dept, joiningData, salary});
-        Toast.makeText(this, "Employee ADdded", Toast.LENGTH_LONG).show();
+        String sql = "INSERT INTO employee (name, department, joiningdate, salary)" +
+                "VALUES (?, ?, ?, ?)";
+        mDatabase.execSQL(sql, new String[]{name, dept, joiningDate, salary});
+        Toast.makeText(this, "Employee added", Toast.LENGTH_SHORT).show();
     }
 }
